@@ -1,18 +1,16 @@
-// https://www.geeksforgeeks.org/detect-cycle-undirected-graph/
-
 import java.util.*;
 
-class DetectCycleInUnDirectedGraph {
+public class DetectCycleInDirectedGraph {
 
     ArrayList<Integer>[] graph;
-    boolean visited[];
+    int visited[];
 
     // given an undirected graph find if it has cycle or not
     @SuppressWarnings("unchecked")
     public boolean detectCycle(int n, int[][] edges) {
         graph = new ArrayList[n];
-        visited = new boolean[n];
-        Arrays.fill(visited, false);
+        visited = new int[n];
+        Arrays.fill(visited, 0);
 
         for(int i=0;i<n;i++)
             graph[i] = new ArrayList<>();
@@ -23,7 +21,7 @@ class DetectCycleInUnDirectedGraph {
         }
 
         for(int i=0;i<n;i++) { // if graph is disconnected
-            if (!visited[i]) {
+            if (visited[i] == 0) { // if node is not visisted
                 if (hasCycle(i, -1))
                     return true;
             }
@@ -33,17 +31,19 @@ class DetectCycleInUnDirectedGraph {
     }
 
     public boolean hasCycle(int node, int parent) {
-       visited[node] = true;
+       visited[node] = 1; // 1 means node is in recursion stack, node visited but not explored
 
        for(int child: graph[node]) {
-            if (child == parent) continue; // since it is a undirected graph, there always exists an edge from  child to parent and parent to child
-            
-            if (visited[child]) { // if child is already visisted, there is a back edge so it forms a cycle
+            if (visited[child] == 2) { // if child is already visited and explored
+                continue;
+            } else if (visited[child] == 1) { // if child is in recursion stack and comes again means there is a back edge and hence cycle exists
                 return true;
-            } else if (hasCycle(child, node)) {
+            } else if (hasCycle(child, node)) { // if child not visisted
                 return true;
             }
        }
+
+       visited[node] = 2; // 2 means node is visted and explored
 
        return false;
     }

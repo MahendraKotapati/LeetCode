@@ -27,6 +27,8 @@ public class TopologicalSorting {
     // find topo sort using Khan's algorithm
     public static List<Integer> findTopologicalOrder(int totalNodes, int[][] edges) {
         Queue<Integer> q = new LinkedList<Integer>();
+        
+        @SuppressWarnings("unchecked")
         List<Integer>[] adj = new ArrayList[totalNodes]; 
         List<Integer>topologicalOrder = new ArrayList<Integer>();
 
